@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { last, tap } from 'rxjs/operators';
 import { CalculatorService } from './calculator.service';
 
 @Component({
@@ -19,6 +20,19 @@ export class CalculatorComponent implements OnInit {
       this.calculatorService.results$.next(v);
       this.waitForSecondNumber = false;
     } else {
+      this.calculatorService.results$
+        .asObservable()
+        .pipe(
+          last(),
+          tap((val) => {
+            if (val === '0') {
+              this.calculatorService.results$.next(v);
+            } else {
+              this.calculatorService.results$.next(val + v);
+            }
+          })
+        )
+        .subscribe();
       this.currentNumber === '0'
         ? (this.currentNumber = v)
         : (this.currentNumber += v);
