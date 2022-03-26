@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 
 @Injectable()
 export class CalculatorService {
+  public results$ = new BehaviorSubject(0);
 
-  public results$ = new ReplaySubject(100);
+  public historique$ = new ReplaySubject(10);
 
-  
-
-
-  constructor() {}
+  constructor() {
+    this.results$.subscribe((data) => this.historique$.next(data));
+  }
 }

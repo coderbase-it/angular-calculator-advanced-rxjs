@@ -17,22 +17,17 @@ export class CalculatorComponent implements OnInit {
     console.log(v);
     if (this.waitForSecondNumber) {
       this.currentNumber = v;
-      this.calculatorService.results$.next(v);
+      this.calculatorService.results$.next(Number(v));
       this.waitForSecondNumber = false;
     } else {
-      this.calculatorService.results$
-        .asObservable()
-        .pipe(
-          last(),
-          tap((val) => {
-            if (val === '0') {
-              this.calculatorService.results$.next(v);
-            } else {
-              this.calculatorService.results$.next(val + v);
-            }
-          })
-        )
-        .subscribe();
+      if (this.calculatorService.results$.value === 0) {
+        this.calculatorService.results$.next(Number(v));
+      } else {
+        this.calculatorService.results$.next(
+          Number(this.calculatorService.results$.value + v)
+        );
+      }
+
       this.currentNumber === '0'
         ? (this.currentNumber = v)
         : (this.currentNumber += v);
@@ -81,7 +76,7 @@ export class CalculatorComponent implements OnInit {
 
   public clear() {
     this.currentNumber = '0';
-    this.calculatorService.results$.next('0');
+    this.calculatorService.results$.next(0);
     this.firstOperand = null;
     this.operator = null;
     this.waitForSecondNumber = false;
