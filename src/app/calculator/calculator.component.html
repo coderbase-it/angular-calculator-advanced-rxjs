@@ -3,7 +3,7 @@
     <input
       type="text"
       class="calculator-screen"
-      [value]="currentNumber"
+      [value]="calculatorService.results$ | async"
       disabled
     />
     <div class="calculator-keys">
