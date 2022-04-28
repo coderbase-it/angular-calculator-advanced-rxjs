@@ -56,6 +56,7 @@ export class CalculatorComponent implements OnInit {
 
   public getOperation(op: string) {
     console.log(op);
+    this.calculatorService.results$.next(op)
 
     if (this.firstOperand === null) {
       this.firstOperand = Number(this.currentNumber);
@@ -64,6 +65,7 @@ export class CalculatorComponent implements OnInit {
         this.operator,
         Number(this.currentNumber)
       );
+      
       this.currentNumber = String(result);
       this.calculatorService.results$.next(result);
       this.firstOperand = result;

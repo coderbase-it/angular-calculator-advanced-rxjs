@@ -130,13 +130,11 @@
 
       <!-- decimal-reset-equal -->
     </div>
-    
   </div>
   <div class="history">
     <div class="title">Historique</div>
     <div class="log">
-    <p>{{calculatorService.historique}}</p>
+      <p>{{ calculatorService.historique$ | async }}</p>
     </div>
   </div>
 </div>
-
